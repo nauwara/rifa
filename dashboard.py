@@ -59,47 +59,57 @@ with tab1:
         # ==========================
         # PREPROCESSING
         # ==========================
-        img_resized = img.resize((224, 224))  # ubah jika model kamu pakai ukuran lain
-        img_array = image.img_to_array(img_resized)
-        img_array = np.expand_dims(img_array, axis=0)
-        img_array = img_array / 255.0
+        try:
+            input_shape = classifier.input_shape[1:3]
+            st.caption(f"📏 Ukuran input model: {input_shape}")
 
-        # ==========================
-        # PREDIKSI
-        # ==========================
-        with st.spinner("🔍 Menganalisis gambar..."):
-            prediction = classifier.predict(img_array)
-            class_index = np.argmax(prediction)
-            predicted_label = classes[class_index]
-            confidence = np.max(prediction)
+            img_resized = img.resize(input_shape)
+            img_array = image.img_to_array(img_resized)
+            img_array = np.expand_dims(img_array, axis=0)
 
-        # ==========================
-        # HASIL PREDIKSI
-        # ==========================
-        st.success(f"✅ Prediksi: **{predicted_label}**")
-        st.metric("Tingkat Keyakinan Model", f"{confidence*100:.2f}%")
+            if np.max(img_array) > 1:
+                img_array = img_array / 255.0
 
-        st.markdown("---")
-        st.markdown(f"### Tentang {predicted_label}")
-        st.write(species_info[predicted_label])
+            # ==========================
+            # PREDIKSI
+            # ==========================
+            with st.spinner("🔍 Menganalisis gambar..."):
+                prediction = classifier.predict(img_array)
+                class_index = np.argmax(prediction)
+                predicted_label = classes[class_index]
+                confidence = np.max(prediction)
 
-        # ==========================
-        # VISUALISASI PROBABILITAS
-        # ==========================
-        st.markdown("### 📊 Probabilitas Tiap Kelas")
-        fig, ax = plt.subplots()
-        ax.bar(classes, prediction[0], color=['#F4A261', '#2A9D8F', '#E76F51', '#264653', '#E9C46A'])
-        ax.set_ylabel("Probabilitas")
-        ax.set_xlabel("Kelas")
-        ax.set_title("Distribusi Keyakinan Model")
-        st.pyplot(fig)
+            # ==========================
+            # HASIL PREDIKSI
+            # ==========================
+            st.success(f"✅ Prediksi: **{predicted_label}**")
+            st.metric("Tingkat Keyakinan Model", f"{confidence*100:.2f}%")
 
-        # ==========================
-        # TOMBOL ULANG
-        # ==========================
-        st.markdown("---")
-        if st.button("🔁 Coba Gambar Lain"):
-            st.experimental_rerun()
+            st.markdown("---")
+            st.markdown(f"### Tentang {predicted_label}")
+            st.write(species_info[predicted_label])
+
+            # ==========================
+            # VISUALISASI PROBABILITAS
+            # ==========================
+            st.markdown("### 📊 Probabilitas Tiap Kelas")
+            fig, ax = plt.subplots()
+            ax.bar(classes, prediction[0], color=['#F4A261', '#2A9D8F', '#E76F51', '#264653', '#E9C46A'])
+            ax.set_ylabel("Probabilitas")
+            ax.set_xlabel("Kelas")
+            ax.set_title("Distribusi Keyakinan Model")
+            st.pyplot(fig)
+
+            # ==========================
+            # TOMBOL ULANG
+            # ==========================
+            st.markdown("---")
+            if st.button("🔁 Coba Gambar Lain"):
+                st.experimental_rerun()
+
+        except Exception as e:
+            st.error("❌ Terjadi kesalahan saat memproses gambar.")
+            st.caption(f"Detail error: {str(e)}")
 
     else:
         st.info("📂 Silakan unggah gambar untuk mulai klasifikasi.")
