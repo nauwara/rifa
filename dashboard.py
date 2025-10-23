@@ -22,7 +22,7 @@ st.markdown("### UTS Big Data — Rifa Nauwara")
 # ==========================
 @st.cache_resource
 def load_classifier():
-    model = load_model("model/RifaNauwara_Laporan2.h5")  # Ganti path sesuai model kamu
+    model = load_model("model/RifaNauwara_Laporan2.h5")  # pastikan path dan nama file sesuai
     return model
 
 classifier = load_classifier()
@@ -59,7 +59,7 @@ with tab1:
         # ==========================
         # PREPROCESSING
         # ==========================
-        img_resized = img.resize((224, 224))  # sesuaikan dengan input model
+        img_resized = img.resize((224, 224))  # ubah jika model kamu pakai ukuran lain
         img_array = image.img_to_array(img_resized)
         img_array = np.expand_dims(img_array, axis=0)
         img_array = img_array / 255.0
