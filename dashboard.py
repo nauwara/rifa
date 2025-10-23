@@ -21,17 +21,21 @@ st.markdown("### UTS Big Data — Rifa Nauwara")
 # ==========================
 @st.cache_resource
 def load_classifier():
-    model = load_model("model/RifaNauwara_Laporan2.h5")  # ganti path sesuai punyamu
+    model = load_model("model/RifaNauwara_Laporan2.h5")  # pastikan nama dan path sesuai di repo GitHub kamu
     return model
 
 classifier = load_classifier()
+
+# Ambil ukuran input otomatis dari model
+input_shape = classifier.input_shape[1:3]  # contoh: (128, 128)
+st.caption(f"📏 Ukuran input model: {input_shape}")
 
 # ==========================
 # LABEL KELAS
 # ==========================
 classes = ["Cheetah", "Leopard", "Lion", "Puma", "Tiger"]
 
-# deskripsi singkat tiap kelas
+# deskripsi tiap kelas
 species_info = {
     "Cheetah": "🐆 Cheetah dikenal sebagai hewan darat tercepat di dunia, dengan tubuh ramping dan bercak hitam khas.",
     "Leopard": "🐆 Leopard memiliki kemampuan memanjat pohon yang hebat dan pola tutul roset di seluruh tubuhnya.",
@@ -46,13 +50,13 @@ species_info = {
 uploaded_file = st.file_uploader("Unggah gambar spesies kucing besar:", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    img = Image.open(uploaded_file)
+    img = Image.open(uploaded_file).convert("RGB")
     st.image(img, caption="📸 Gambar yang diunggah", use_container_width=True)
 
     # ==========================
     # PREPROCESSING
     # ==========================
-    img_resized = img.resize((224, 224))  # sesuaikan dengan ukuran input model kamu
+    img_resized = img.resize(input_shape)  # otomatis menyesuaikan ukuran model
     img_array = image.img_to_array(img_resized)
     img_array = np.expand_dims(img_array, axis=0)
     img_array = img_array / 255.0
@@ -67,7 +71,7 @@ if uploaded_file is not None:
         confidence = np.max(prediction)
 
     # ==========================
-    # TAMPILKAN HASIL
+    # HASIL PREDIKSI
     # ==========================
     st.success(f"✅ Prediksi: **{predicted_label}**")
     st.metric("Tingkat Keyakinan Model", f"{confidence*100:.2f}%")
