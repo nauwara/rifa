@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 st.title("🐯 Felidae Species Classification Dashboard")
-st.markdown("### UTS Big Data — Rifa Nauwara")
+st.markdown("### UTS Lab Big Data — Rifa Nauwara")
 
 # ==========================
 # LOAD MODEL
