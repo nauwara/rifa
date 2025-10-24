@@ -44,7 +44,10 @@ species_info = {
 # ==========================
 # TABS UNTUK MULTI-MODEL (FELIDAE & DIGITS)
 # ==========================
-tab1, tab2 = st.tabs("🐯 Felidae Classifier")
+# ==========================
+# HALAMAN UTAMA — FELIDAE CLASSIFIER
+# ==========================
+st.header("🐯 Felidae Classifier")
 
 # ==========================
 # TAB 1 — FELIDAE CLASSIFIER
