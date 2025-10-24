@@ -9,34 +9,60 @@ import matplotlib.pyplot as plt
 # KONFIGURASI DASBOR
 # ==========================
 st.set_page_config(
-    page_title="UTS Lab Big Data Rifa Nauwara — Felidae Classifier",
-    page_icon="🐯",
+    page_title="UTS Rifa Nauwara",
+    page_icon="🎓",
     layout="wide"
 )
 
-# Tema warna pastel
+# ==========================
+# GAYA (TEMA PASTEL)
+# ==========================
 st.markdown(
     """
     <style>
-        body {
-            background-color: #FFF7F0;
-        }
+        /* Warna latar pastel */
         .stApp {
             background-color: #FFF7F0;
+            color: #4A3F35;
         }
-        h1, h2, h3, h4 {
-            color: #7B6079;
+
+        /* Judul utama */
+        h1, h2, h3 {
+            color: #4A3F35;
+            font-weight: 800;
         }
+
+        /* Paragraf dan teks umum */
+        p, label, span, div {
+            color: #5A4E44;
+        }
+
+        /* Tombol */
         .stButton>button {
             background-color: #F9D5E5;
-            color: #4A4A4A;
-            border-radius: 10px;
+            color: #4A3F35;
+            border-radius: 12px;
             border: none;
-            font-weight: bold;
+            font-weight: 600;
+            transition: 0.3s;
         }
+
         .stButton>button:hover {
             background-color: #E5BACE;
             color: white;
+        }
+
+        /* Kotak upload */
+        [data-testid="stFileUploader"] {
+            background-color: #FFF0F5;
+            border: 2px dashed #E5BACE;
+            border-radius: 15px;
+            padding: 15px;
+        }
+
+        /* Garis pembatas */
+        hr {
+            border: 1px solid #E5BACE;
         }
     </style>
     """,
@@ -44,10 +70,10 @@ st.markdown(
 )
 
 # ==========================
-# JUDUL UTAMA
+# HEADER
 # ==========================
-st.title("🎓 UTS LAB BIG DATA RIFA NAUWARA")
-st.markdown("## 🐯 Felidae Species Classification Dashboard")
+st.markdown("<h1>🎓 UTS LAB BIG DATA RIFA NAUWARA</h1>", unsafe_allow_html=True)
+st.markdown("### 🐯 Felidae Species Classification Dashboard")
 st.caption("UTS Lab Big Data — Universitas Syiah Kuala")
 
 # ==========================
@@ -74,34 +100,33 @@ species_info = {
 }
 
 # ==========================
-# HALAMAN UTAMA — FELIDAE CLASSIFIER
+# BAGIAN UNGGAH GAMBAR
 # ==========================
-st.header("📸 Unggah dan Klasifikasikan Gambar Felidae")
-
+st.markdown("---")
+st.subheader("📸 Unggah dan Klasifikasikan Gambar Felidae")
 uploaded_file = st.file_uploader("Unggah gambar spesies kucing besar:", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     img = Image.open(uploaded_file)
-    st.image(img, caption="Gambar yang diunggah", use_container_width=True)
+    st.image(img, caption="📷 Gambar yang diunggah", use_container_width=True)
 
     try:
-        # PREPROCESSING
         input_shape = classifier.input_shape[1:3]
+        st.caption(f"📏 Ukuran input model: {input_shape}")
+
         img_resized = img.resize(input_shape)
         img_array = image.img_to_array(img_resized)
         img_array = np.expand_dims(img_array, axis=0)
+        img_array = img_array / 255.0
 
-        if np.max(img_array) > 1:
-            img_array = img_array / 255.0
-
-        # PREDIKSI
+        # Prediksi
         with st.spinner("🔍 Menganalisis gambar..."):
             prediction = classifier.predict(img_array)
             class_index = np.argmax(prediction)
             predicted_label = classes[class_index]
             confidence = np.max(prediction)
 
-        # HASIL
+        # Hasil
         st.success(f"✅ Prediksi: **{predicted_label}**")
         st.metric("Tingkat Keyakinan Model", f"{confidence*100:.2f}%")
 
@@ -109,17 +134,16 @@ if uploaded_file is not None:
         st.markdown(f"### Tentang {predicted_label}")
         st.write(species_info[predicted_label])
 
-        # VISUALISASI
+        # Grafik
         st.markdown("### 📊 Probabilitas Tiap Kelas")
         fig, ax = plt.subplots()
-        pastel_colors = ['#FFD6BA', '#FFB5A7', '#BEE3DB', '#FCD5CE', '#E2ECE9']
-        ax.bar(classes, prediction[0], color=pastel_colors)
+        ax.bar(classes, prediction[0], color=['#F4A261', '#2A9D8F', '#E76F51', '#264653', '#E9C46A'])
         ax.set_ylabel("Probabilitas")
         ax.set_xlabel("Kelas")
         ax.set_title("Distribusi Keyakinan Model")
         st.pyplot(fig)
 
-        # TOMBOL ULANG
+        # Tombol ulang
         st.markdown("---")
         if st.button("🔁 Coba Gambar Lain"):
             st.experimental_rerun()
@@ -136,12 +160,11 @@ else:
 # ==========================
 st.markdown("---")
 st.subheader("📈 Statistik Model Felidae")
-col1, col2 = st.columns(2)
 
+col1, col2 = st.columns(2)
 with col1:
     st.metric("Jumlah Dataset", "243 gambar")
     st.metric("Jumlah Kelas", "5 spesies kucing besar")
-
 with col2:
     st.metric("Akurasi Training", "92.7%")
     st.metric("Akurasi Validasi", "88.3%")
@@ -152,4 +175,4 @@ st.caption("📊 Data diambil dari hasil pelatihan model CNN Felidae — Rifa Na
 # FOOTER
 # ==========================
 st.markdown("---")
-st.caption("🌸 Dibuat oleh **Rifa Nauwara** | UTS Lab Big Data — Universitas Syiah Kuala 🌸")
+st.caption("Dibuat oleh **Rifa Nauwara** | 💕 UTS Lab Big Data — 2025")
