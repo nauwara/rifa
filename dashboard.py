@@ -72,8 +72,8 @@ st.markdown(
 # ==========================
 # HEADER
 # ==========================
-st.markdown("<h1>🎓 LAPORAN 5 PRAKTIKUM BIG DATA RIFA NAUWARA</h1>", unsafe_allow_html=True)
-st.markdown("### 🐯 Felidae Species Classification Dashboard")
+st.markdown("<h1>🎓 FELIDAE SPECIES CLASSIFICATION DASHBOARD </h1>", unsafe_allow_html=True)
+st.markdown("### 🐯 LAPORAN 5 PRAKTIKUM BIG DATA RIFA NAUWARA")
 st.caption("Praktikum Big Data — Universitas Syiah Kuala")
 
 # ==========================
