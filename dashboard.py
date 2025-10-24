@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 # KONFIGURASI DASBOR
 # ==========================
 st.set_page_config(
-    page_title="UTS Rifa Nauwara",
+    page_title="Dashboard Rifa Nauwara",
     page_icon="🎓",
     layout="wide"
 )
@@ -72,9 +72,9 @@ st.markdown(
 # ==========================
 # HEADER
 # ==========================
-st.markdown("<h1>🎓 UTS LAB BIG DATA RIFA NAUWARA</h1>", unsafe_allow_html=True)
+st.markdown("<h1>🎓 LAPORAN 5 PRAKTIKUM BIG DATA RIFA NAUWARA</h1>", unsafe_allow_html=True)
 st.markdown("### 🐯 Felidae Species Classification Dashboard")
-st.caption("UTS Lab Big Data — Universitas Syiah Kuala")
+st.caption("Praktikum Big Data — Universitas Syiah Kuala")
 
 # ==========================
 # LOAD MODEL
@@ -175,4 +175,4 @@ st.caption("📊 Data diambil dari hasil pelatihan model CNN Felidae — Rifa Na
 # FOOTER
 # ==========================
 st.markdown("---")
-st.caption("Dibuat oleh **Rifa Nauwara** | 💕 UTS Lab Big Data — 2025")
+st.caption("Dibuat oleh **Rifa Nauwara** | 💕 Praktikum Big Data — 2025")
